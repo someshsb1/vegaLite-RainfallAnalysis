@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@latest"></script>
+    <style>
+      .chart-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='chart-container'>
+      <div id='seattle-vis'></div>
+    </div>
+    <div class='chart-container'>
+      <div id='boston-vis'></div>
+    </div>
+
+    <script>
+      // Chart for Seattle
+      const seattleChart = {
+        width: 600,
+        data: { url: "https://vega.github.io/vega-lite/data/seattle-weather.csv" },
+        mark: "circle",
+        title: "Seattle Weather",
+        encoding: {
+          x: {
+            field: "date",
+            timeUnit: "monthdate",
+            axis: { format: "%b" },
+            title: "Month",
+          },
+          y: {
+            field: "temp_max",
+            type: "quantitative",
+            title: "Maximum Temperature (C)",
+          },
+          size: { field: "precipitation", type: "quantitative", scale: { domain: [-1, 50] } },
+          color: { field: "weather", type: "nominal", title: "Weather" }, // Interactive Legends
+          tooltip: [
+            { field: "date", type: "temporal", title: "Date" },
+            { field: "temp_max", type: "quantitative", title: "Max Temperature (C)" },
+            { field: "precipitation", type: "quantitative", title: "Precipitation" },
+            { field: "weather", type: "nominal", title: "Weather" },
+          ], // Tooltips
+        },
+      };
+
+      // Chart for Boston
+      const bostonChart = {
+        width: 600,
+        data: { url: "https://cs617.org/data/boston_weather.csv" },
+        mark: "circle",
+        title: "Boston Weather",
+        transform: [
+          {
+            filter: {
+              field: "time",
+              range: [
+                { year: 2012, month: 1, date: 1 },
+                { year: 2016, month: 12, date: 31 },
+              ],
+            },
+          },
+        ],
+        encoding: {
+          x: {
+            field: "time",
+            timeUnit: "monthdate",
+            axis: { format: "%b" },
+            title: "Month",
+          },
+          y: { field: "tmax", type: "quantitative", title: "Maximum Temperature (C)" },
+          size: { field: "prcp", type: "quantitative", scale: { domain: [-1, 50] } },
+          tooltip: [
+            { field: "time", type: "temporal", title: "Date" },
+            { field: "tmax", type: "quantitative", title: "Max Temperature (C)" },
+            { field: "prcp", type: "quantitative", title: "Precipitation" },
+          ],
+        },
+      };
+
+      // Embed charts
+      vegaEmbed("#seattle-vis", seattleChart, { actions: true });
+      vegaEmbed("#boston-vis", bostonChart, { actions: true });
+    </script>
+  </body>
+</html>
