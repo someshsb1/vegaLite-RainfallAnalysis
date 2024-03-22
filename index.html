@@ -22,7 +22,7 @@
     <script>
       // Chart for Seattle
       const seattleChart = {
-        width: 600,
+        width: 1000,
         data: { url: "https://vega.github.io/vega-lite/data/seattle-weather.csv" },
         mark: "circle",
         title: "Seattle Weather",
@@ -47,11 +47,16 @@
             { field: "weather", type: "nominal", title: "Weather" },
           ], // Tooltips
         },
+        "params": [{
+          "name": "zoom",
+          "select": "interval",
+          "bind": "scales"
+        }],
       };
 
       // Chart for Boston
       const bostonChart = {
-        width: 600,
+        width: 1000,
         data: { url: "https://cs617.org/data/boston_weather.csv" },
         mark: "circle",
         title: "Boston Weather",
@@ -81,6 +86,11 @@
             { field: "prcp", type: "quantitative", title: "Precipitation" },
           ],
         },
+        "params": [{
+          "name": "zoom",
+          "select": "interval",
+          "bind": "scales"
+        }],
       };
 
       // Embed charts
